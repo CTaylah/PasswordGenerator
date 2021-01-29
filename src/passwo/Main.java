@@ -1,6 +1,7 @@
 package passwo;
 import java.util.Scanner;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 
@@ -11,11 +12,14 @@ public class Main {
 		System.out.println("How many characters for this passord?");
 		char[] pass = new char[input.nextInt()];
 		String password = genPassword(pass);
+		System.out.println("Will we call the password?");
+		String title = input.next();
 		
 	    try {
-	        File myObj = new File(password);
+	        File myObj = new File("TopSecret.txt");
 	        if (myObj.createNewFile()) {
 	          System.out.println("File created: " + myObj.getName());
+	          myObj.setWritable(true);
 	        } else {
 	          System.out.println("File already exists.");
 	        }
@@ -23,7 +27,16 @@ public class Main {
 	        System.out.println("An error occurred.");
 	        e.printStackTrace();
 	      }
-		
+	    try {
+	        FileWriter myWriter = new FileWriter("TopSecret.txt", true);
+	        myWriter.write(title +": \t" + password);
+	        myWriter.append("\n");
+	        myWriter.close();
+	        System.out.println("Successfully wrote to the file.");
+	      } catch (IOException e) {
+	        System.out.println("An error occurred.");
+	        e.printStackTrace();
+	      }
 	}
 	
 	public static String genPassword(char[] pass) {
@@ -48,17 +61,4 @@ public class Main {
 		return str;
 	}
 	
-	public static void createFile() {
-	    try {
-	        File myObj = new File("filename.txt");
-	        if (myObj.createNewFile()) {
-	          System.out.println("File created: " + myObj.getName());
-	        } else {
-	          System.out.println("File already exists.");
-	        }
-	      } catch (IOException e) {
-	        System.out.println("An error occurred.");
-	        e.printStackTrace();
-	      }
-	}
 }
